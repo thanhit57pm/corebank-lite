@@ -1,33 +1,33 @@
-HELP.md
+# ===== Maven build output =====
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.jar
+*.war
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
+# ===== IntelliJ IDEA =====
+.idea/
 *.iml
 *.ipr
+*.iws
+out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# ===== File cấu hình chứa thông tin nhạy cảm (KHÔNG BAO GIỜ commit) =====
+application-local.yml
+application-local.yaml
+.env
+.env.local
+*.env
 
-### VS Code ###
-.vscode/
+# ===== Log =====
+*.log
+logs/
+
+# ===== OS-specific (Ubuntu/Linux) =====
+.directory
+*~
+
+# ===== Test / coverage report =====
+/coverage/
+*.exec
+
+# ===== Docker (nếu có compose.override.yml chứa secret riêng máy) =====
+docker-compose.override.yml
