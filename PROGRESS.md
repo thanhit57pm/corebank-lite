@@ -10,6 +10,10 @@ cập nhật để lịch sử Git phản ánh đúng tiến độ thật.
 - [ ] Tạo user Oracle `corebank_app`, chạy thử migration thành công
 - [ ] Cấu trúc package rỗng (common/config/core/modules/security)
 
+## Module User (BỔ SUNG — thiếu trong bản gốc, phát hiện sau)
+- [ ] UserEntity, UserRepository, UserService (CRUD user, TELLER tạo khách mới)
+- [ ] UserDetailServiceImpl chỉ gọi lại UserRepository (adapter cho Security)
+
 ## Chặng 1: Cursor Pagination & Truy vấn động (bài 11-20)
 - [ ] 11. API lấy lịch sử giao dịch theo cursor
 - [ ] 12. Mã hóa cursor Base64
@@ -75,8 +79,21 @@ cập nhật để lịch sử Git phản ánh đúng tiến độ thật.
 - [ ] 69. Specification Metamodel
 - [ ] 70. CI/CD GitHub Actions
 
+## Chặng 7: Bổ sung đặc thù ngân hàng (bài 71-78 — QUAN TRỌNG, đừng bỏ qua)
+- [ ] 71. Enforce daily_limit (lỗ hổng nghiệp vụ nếu bỏ sót)
+- [ ] 72. Toàn bộ field tiền dùng BigDecimal, không double/float
+- [ ] 73. Actuator health check (/actuator/health, /actuator/health/db)
+- [ ] 74. Swagger UI (springdoc-openapi-starter-webmvc-ui 3.1.0)
+- [ ] 75. Correlation-id (traceId) qua MDC trong log
+- [ ] 76. API versioning /api/v1/
+- [ ] 77. Soft-delete cho account/user (không DELETE cứng)
+- [ ] 78. Test daily_limit cộng dồn nhiều giao dịch trong ngày
+
 ## Mức "đủ để nộp CV" (tối thiểu)
-- [ ] Toàn bộ Chặng 1-4
+- [ ] Toàn bộ Chặng 1-4 + module User
 - [ ] Bài 52, 57, 60 (Chặng 5)
 - [ ] Bài 62, 63, 70 (Chặng 6: test + CI)
+- [ ] Bài 71, 72 (Chặng 7 — 2 bài BẮT BUỘC, không phải tùy chọn:
+      thiếu 1 trong 2 là lỗ hổng nghiệp vụ/kỹ thuật thật, không phải
+      thiếu tính năng phụ)
 - [ ] README hoàn chỉnh với kiến trúc + hướng dẫn chạy
