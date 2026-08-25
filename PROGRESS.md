@@ -10,9 +10,10 @@ cập nhật để lịch sử Git phản ánh đúng tiến độ thật.
 - [ ] Tạo user Oracle `corebank_app`, chạy thử migration thành công
 - [ ] Cấu trúc package rỗng (common/config/core/modules/security)
 
-## Module User (BỔ SUNG — thiếu trong bản gốc, phát hiện sau)
-- [ ] UserEntity, UserRepository, UserService (CRUD user, TELLER tạo khách mới)
-- [ ] UserDetailServiceImpl chỉ gọi lại UserRepository (adapter cho Security)
+## User (KHÔNG tách module riêng — chỉ 2 file phục vụ security)
+- [ ] UserEntity.java (security/user/) — map bảng users cho FK account.user_id
+- [ ] UserRepository.java (security/user/) — chỉ cần findByUsername()
+- [ ] UserDetailServiceImpl gọi UserRepository ở trên (adapter cho Security)
 
 ## Chặng 1: Cursor Pagination & Truy vấn động (bài 11-20)
 - [ ] 11. API lấy lịch sử giao dịch theo cursor
