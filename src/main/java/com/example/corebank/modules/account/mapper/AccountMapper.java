@@ -8,6 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
 
-    @Mapping(target = "accountHolderName", source = "user.fullname")
+    @Mapping(target = "accountHolderName", source = "user.fullName")
     AccountResponse toResponse(AccountEntity entity);
 }
