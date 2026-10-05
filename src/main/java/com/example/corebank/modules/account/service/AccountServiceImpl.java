@@ -12,16 +12,14 @@ import com.example.corebank.modules.account.mapper.AccountMapper;
 import com.example.corebank.modules.account.repository.AccountRepository;
 import com.example.corebank.security.user.UserEntity;
 import com.example.corebank.security.user.UserRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> implements AccountService {
-
 
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final int MAX_GENERATE_RETRY = 5;
@@ -30,16 +28,21 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> imp
     private final UserRepository userRepository;
     private final AccountMapper accountMapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository,UserRepository userRepository,AccountMapper accountMapper) {
+    public AccountServiceImpl(AccountRepository accountRepository,
+                              UserRepository userRepository,
+                              AccountMapper accountMapper) {
         super(accountRepository, "Account");
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.accountMapper = accountMapper;
     }
+
     @Override
     public AccountResponse createAccount(AccountCreateRequest request) {
         UserEntity user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND, "User khong ton tai voi id: " + request.userId()));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND,
+                        "User không tồn tại với id: " + request.userId()));
+
         AccountEntity account = AccountEntity.builder()
                 .accountNumber(generateUniqueAccountNumber())
                 .user(user)
@@ -49,8 +52,10 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> imp
                 .perTxnLimit(new BigDecimal("500000000"))
                 .version(0L)
                 .build();
+
         AccountEntity saved = accountRepository.save(account);
-        // TODO: bo sung audit log.
+        // TODO: Commit 26 - Audit account creation with accountId and performedBy
+
         return accountMapper.toResponse(saved);
     }
 
@@ -63,21 +68,23 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> imp
 
     @Override
     public void lockAccount(Long id, AccountLockRequest request) {
-        AccountEntity entry = findById(id);
-        entry.setStatus(AccountStatus.LOCKED);
-        accountRepository.save(entry);
-        //Todo: Log
+        AccountEntity account = findById(id);
+        account.setStatus(AccountStatus.LOCKED);
+        accountRepository.save(account);
+        // TODO: Commit 26 - Audit account lock with accountId, reason and performedBy
     }
 
     @Override
     public void unlockAccount(Long id) {
         AccountEntity account = findById(id);
-        if(!account.getStatus().equals(AccountStatus.LOCKED)){
-            throw new BusinessException(ErrorCode.ACCOUNT_NOT_LOCKED, "Tài khoản chưa bị khóa: \" + account.getAccountNumber()");
+        if (account.getStatus() != AccountStatus.LOCKED) {
+            throw new BusinessException(ErrorCode.ACCOUNT_NOT_LOCKED,
+                    "Tài khoản chưa bị khóa: " + account.getAccountNumber());
         }
         account.setStatus(AccountStatus.ACTIVE);
         accountRepository.save(account);
-        //Todo: Log
+
+        // TODO: Commit 26 - Audit account unlock with accountId and performedBy
     }
 
     private String generateUniqueAccountNumber() {
