@@ -12,8 +12,10 @@ import com.example.corebank.modules.account.mapper.AccountMapper;
 import com.example.corebank.modules.account.repository.AccountRepository;
 import com.example.corebank.security.user.UserEntity;
 import com.example.corebank.security.user.UserRepository;
+
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +55,7 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> imp
                 .version(0L)
                 .build();
 
-        AccountEntity saved = accountRepository.save(account);
+        AccountEntity saved = save(account);
         // TODO: Commit 26 - Audit account creation with accountId and performedBy
 
         return accountMapper.toResponse(saved);
@@ -70,7 +72,7 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> imp
     public void lockAccount(Long id, AccountLockRequest request) {
         AccountEntity account = findById(id);
         account.setStatus(AccountStatus.LOCKED);
-        accountRepository.save(account);
+        save(account);
         // TODO: Commit 26 - Audit account lock with accountId, reason and performedBy
     }
 
@@ -82,7 +84,7 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountEntity, Long> imp
                     "Tài khoản chưa bị khóa: " + account.getAccountNumber());
         }
         account.setStatus(AccountStatus.ACTIVE);
-        accountRepository.save(account);
+        save(account);
 
         // TODO: Commit 26 - Audit account unlock with accountId and performedBy
     }

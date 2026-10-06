@@ -39,7 +39,7 @@ CREATE TABLE transactions (
     amount            NUMBER(18,2)  NOT NULL CHECK (amount > 0),
     status            VARCHAR2(20)  DEFAULT 'PENDING' NOT NULL
                           CHECK (status IN ('PENDING', 'SUCCESS', 'FAILED', 'REVERSED')),
-    failure_reason    VARCHAR2(255),
+    failure_reason     VARCHAR2(255),
     created_at        TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
     completed_at      TIMESTAMP,
     CONSTRAINT chk_diff_accounts CHECK (from_account_id <> to_account_id)
